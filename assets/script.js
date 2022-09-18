@@ -1,22 +1,21 @@
 //Global const
 const cityInput     = document.getElementById('search-input');  //obtain input from HTML
 const previousInput = document.getElementById('previous-list'); //obtain input from previous selection.
-const displayCity   = document.getElementById('display-city');  //
-const displayDate   = document.getElementById('display-date');  
-const displayTemp   = document.getElementById('display-temp');
-const displayHum    = document.getElementById('display-hum');
-const displayWind   = document.getElementById('display-wind');
-const displayUV     = document.getElementById('display-UV');  
-const submitCity    = document.querySelector('#search-submit');
+const displayCity   = document.getElementById('display-city');  //element for the display of the city name
+const displayDate   = document.getElementById('display-date');  //element for the display of the date
+const displayTemp   = document.getElementById('display-temp');  //element for the display of the temp
+const displayHum    = document.getElementById('display-hum');   //element for the display of the humidity
+const displayWind   = document.getElementById('display-wind');  //element for the display of wind
+const displayUV     = document.getElementById('display-UV');    //element for the display of the UV
+const submitCity    = document.querySelector('#search-submit'); //button for search submission
 
 
-
-const APIKey = 'aef8ff579a371781a816a273903f8295';
+const APIKey        = 'aef8ff579a371781a816a273903f8295';
 
 
 const userCity = ""; // this is the users city selection
 const newCity = {}; // the city to be added history list
-
+const dayCount = 6; // input number of days to present, current plus future day count 1 + 5 = 6
 
 
 
@@ -26,85 +25,75 @@ let cityList = []; // list of cities previously searched
 //Search function
 // Attempt to get the user's search of city data if it exists
 
-// function getUserCityChoice(city){
+function getUserCityChoice(){
 
-//     // var inputNewCity = {};
+    var CityQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=Brisbane&limit=1&appid=" + APIKey;
 
-//     // var count = 6;
+    console.log(CityQueryURL);
 
-//     var CityQueryURL = "https://api.openweathermap.org/data/2.5/forecast?q=brisbane&appid=" + APIKey;
+    return fetch(CityQueryURL)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(result){
+        console.log(result);
+        const lat = result[0].lat;
+        console.log(lat);
+        const lon = result[0].lon;
+        console.log(lon);
 
-//     console.log(CityQueryURL);
+    var QueryURLLonLat = "https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&units=metric&cnt=" + dayCount + "&appid="+ APIKey;
+    console.log(QueryURLLonLat);
 
-//     return fetch(CityQueryURL)
-//     .then(function(response){
-//         return response.json();
-//     })
-//     .then(function(result){
-//         return{
-//             lon: result.city.coord.lon,
-//             lat: result.city.coord.lat,
-//         }
-//     })
-//     .then(function(result){
-//         var QueryURLLonLat = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=" + APIKey;
+    return fetch(QueryURLLonLat)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(list){
+        console.log(list);
+        const currentTemp = list[0].main.temp;
+        console.log(currentTemp);
 
-//         return fetch(QueryURLLonLat);
-//     })
-//     .then(function(result){
-//         return result.json();
-//     })
-// }
-
-
-
-// getUserCityChoice();
-
+        var currentTempEL = document.createElement('p')
+        currentTempEL.textContent = currentTemp;
+        displayTemp.append(currentTempEl)
+    })
+    }) 
+}
+getUserCityChoice();
 
 
 // store city name so that the search can be redone without typing in again
 
-function storeCityList (event){
-    event.preventDefault();
-    if(localStorage.getItem('cityList')){
-        //get current local storage values
-        var storedCities = JSON.parse(localStorage.getItem('cityList'));
-        //add new city to city list
-        storedCities.push({name: cityInput.value});
-        //saving amended array to local storage
-        localStorage.setItem('cityList',JSON.stringify(storedCities));
+// var storeCityList = function(event){
+//     event.preventDefault();
+//     if(localStorage.getItem('cityList')){
+//         //get current local storage values
+//         var storedCities = JSON.parse(localStorage.getItem('cityList'));
+//         //add new city to city list
+//         storedCities.push({name: cityInput.value});
+//         //saving amended array to local storage
+//         localStorage.setItem('cityList',JSON.stringify(storedCities));
 
-        //loop over the values in the stored list
-        for (let index = 0; index < storedCities.length; index++){
+//         //loop over the values in the stored list
+//         for (let i = cityList.length -1; i >=0; i++){
             
-            const element = storedCities[index];
+//             const element = storedCities[i];
 
-            const cityNameElement = document.createElement('<li>');
-            cityNameElement.innerHTML = element.name;
+//             const cityNameElement = document.createElement('<li>');
+//             cityNameElement.innerHTML = element.name;
 
-            document.getElementById('previous-list').appendChild(cityNameElement)     
-        }
-    } else {
-        var storedCities = [{name: cityInput.value}]
-        localStorage.setItem('cityList', JSON.stringify(storedCities));
-    }
-}
+//             document.getElementById('previous-list').appendChild(cityNameElement)     
+//         }
+//     } else {
+//         var storedCities = [{name: cityInput.value}]
+//         localStorage.setItem('cityList', JSON.stringify(storedCities));
+//     }
+// }
 
-submitCity.addEventListener('submit',storeCityList);
+// submitCity.addEventListener('click',storeCityList);
 
 
-// $(document).on('click','.search-submit', function(event){
-//     //when user clicks search button
-//     //saves the text to local storage
-//     const searchClicked = $(event.target);
-//     //saves text input
-//     const searchText = searchClicked.parent.prev().children();
-//     // saves the value of the text input
-//     const userInput = searchText.val();
-
-//     localStorage.setItem(userInput);
-
-// })
 
 // present the historical search on side bar so that it can be selected
 
@@ -114,7 +103,7 @@ submitCity.addEventListener('submit',storeCityList);
 // for each city obtain:
 // temp
 // humidity
-// windspeed
+// wind speed
 // date
 // icon
 
