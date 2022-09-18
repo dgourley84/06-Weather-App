@@ -6,7 +6,7 @@ const displayDate   = document.getElementById('display-date');  //element for th
 const displayTemp   = document.getElementById('display-temp');  //element for the display of the temp
 const displayHum    = document.getElementById('display-hum');   //element for the display of the humidity
 const displayWind   = document.getElementById('display-wind');  //element for the display of wind
-const displayUV     = document.getElementById('display-UV');    //element for the display of the UV
+const displayWindD    = document.getElementById('display-windD');    //element for the display of the UV
 const submitCity    = document.querySelector('#search-submit'); //button for search submission
 
 
@@ -27,7 +27,7 @@ let cityList = []; // list of cities previously searched
 
 function getUserCityChoice(){
 
-    var CityQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=Brisbane&limit=1&appid=" + APIKey;
+    var CityQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=brisbane&limit=1&appid=" + APIKey;
 
     console.log(CityQueryURL);
 
@@ -49,16 +49,49 @@ function getUserCityChoice(){
     .then(function(response){
         return response.json();
     })
-    .then(function(list){
-        console.log(list);
-        const currentTemp = list[0].main.temp;
-        console.log(currentTemp);
+    .then(function(result){
+        console.log(result);
 
+
+        const currentTemp = [];
+        result.list.forEach(day => {
+            currentTemp.push(day.main.temp)
+        });        
+        console.log(currentTemp);
         var currentTempEL = document.createElement('p')
         currentTempEL.textContent = currentTemp;
-        displayTemp.append(currentTempEl)
+        displayTemp.append(currentTempEL);
+
+        const currentHum = [];
+        result.list.forEach(day => {
+            currentHum.push(day.main.humidity)
+        });        
+        console.log(currentHum);
+        var currentHumEL = document.createElement('p')
+        currentHumEL.textContent = currentHum;
+        displayHum.append(currentHumEL);
+
+        const currentWind = [];
+        result.list.forEach(day => {
+            currentWind.push(day.wind.speed)
+        });        
+        console.log(currentWind);
+        var currentWindEL = document.createElement('p')
+        currentWindEL.textContent = currentWind;
+        displayWind.append(currentWindEL);
+
+        const currentWindD = [];
+        result.list.forEach(day => {
+            currentWindD.push(day.wind.deg)
+        });        
+        console.log(currentWindD);
+        var currentWindDEL = document.createElement('p')
+        currentWindDEL.textContent = currentWindD;
+        displayWindD.append(currentWindDEL);
     })
     }) 
+
+    
 }
 getUserCityChoice();
 
