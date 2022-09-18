@@ -10,8 +10,6 @@ const displayUV     = document.getElementById('display-UV');    //element for th
 const submitCity    = document.querySelector('#search-submit'); //button for search submission
 
 
-const longCity      = document.getElementById('longCity');
-const latCity       = document.getElementById('latCity');
 const APIKey        = 'aef8ff579a371781a816a273903f8295';
 
 
