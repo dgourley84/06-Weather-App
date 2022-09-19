@@ -11,7 +11,7 @@ const submitCity    = document.getElementById('search-submit'); //button for sea
 const currentDate   = moment().format("dddd, MMMM Do YYYY, h:mm a"); // current time and date
 
 const APIKey        = 'aef8ff579a371781a816a273903f8295';
-
+const APIKySecond   = 'fc27e11bfe66c55cfb10bbb09ff1d56a';
 const dayCount = 6; // input number of days to present, current plus future day count 1 + 5 = 6 
 
 let cityList = []; // list of cities previously searched
@@ -50,7 +50,7 @@ function getUserCityChoice(){
         const lon = result[0].lon;
         console.log(lon);
 
-    var QueryURLLonLat = "https://api.openweathermap.org/data/2.5/forecast?lat="+lat+"&lon="+lon+"&units=metric&cnt=" + dayCount + "&appid="+ APIKey;
+    var QueryURLLonLat = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&appid=" + APIKySecond;
     console.log(QueryURLLonLat);
 
     return fetch(QueryURLLonLat)
