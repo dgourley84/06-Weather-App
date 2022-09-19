@@ -5,53 +5,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/style.css" type="stylesheet">
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 
 </head>
 <body>
     <!-- Create header with "weather dashboard" -->
-    <header id="header-div">Weather Dashboard</header>
+    <header class="m-auto my-2 text-light" id="header-div">Weather Dashboard</header>
     <!-- Create search function -->
-    <div id="search-div">
+    <div class="bg-secondary col-3 px-2" id="search-div">
         <!-- Search header -->
-        <h3>Search for a city:</h3>
+        <h3 class="mt-2 mb-4 col-12">Search for a city:</h3>
         <!-- search input box -->
-        <div id="search-input-div">
+        <div id="search-input-div" class="form-control">
             <input id="search-input" placeholder="City Name">
             <button type="submit" id="search-submit">search</button>
         </div>
 
         <!-- table of previously searched locations -->
-        <ul id="previous-list">
+        <ul id="previous-list" class="list-group col-11 mx-auto p-0 mt-4">
 
         </ul>
     </div>
 
     <div>
     <!-- create current weather conditions -->
-        <div id="current-div">
-            <h1>
+        <div id="current-div" class="row bg-secondary my-3 mx-2">
+            <h1 class="py-2 px-4 col-12">
                 <span id="display-city"></span>
                 <span id="display-date"></span>
             </h1>
-            <h4>Temp:
+            <h4 class="col-12">Temp:
                 <span id="display-temp"></span>
             </h4>
-            <h4>Humidity:
+            <h4 class="col-12">Humidity:
                 <span id="display-hum"></span>
             </h4>
-            <h4>Wind speed:
+            <h4 class="col-12">Wind speed:
                 <span id="display-wind"></span>
             </h4>
-            <h4>Wind direction:
+            <h4 class="col-12">Wind direction:
                 <span id="display-windD"></span>
             </h4>
         </div>
 
-        <div id="forecast-div">
+        <div id="forecast-div" class="row m-2">
     <!-- create forecast section with the 5 days section -->
-            <h2 id="forecast-head">5-day forecast:</h2>
+            <h2 id="forecast-head" class="col-12">5-day forecast:</h2>
         </div>
     </div>
 </div>
