@@ -10,8 +10,8 @@ const displayWindD  = document.getElementById('display-windD'); //element for th
 const submitCity    = document.getElementById('search-submit'); //button for search submission
 const currentDate   = moment().format("dddd, MMMM Do YYYY, h:mm a"); // current time and date
 
-const APIKey        = 'aef8ff579a371781a816a273903f8295';
-const APIKySecond   = 'fc27e11bfe66c55cfb10bbb09ff1d56a';
+const APIKey        = 'aef8ff579a371781a816a273903f8295'; //api key for the first call to get lat long
+const APIKySecond   = '3e577ad9e250c4dd28d83578156049cc'; //api key for the second call to get weather
 const dayCount = 6; // input number of days to present, current plus future day count 1 + 5 = 6 
 
 let cityList = []; // list of cities previously searched
@@ -50,7 +50,7 @@ function getUserCityChoice(){
         const lon = result[0].lon;
         console.log(lon);
 
-    var QueryURLLonLat = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&appid=" + APIKySecond;
+    var QueryURLLonLat = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&exclude=hourly,minutely&appid=" + APIKySecond;
     console.log(QueryURLLonLat);
 
     return fetch(QueryURLLonLat)
@@ -59,42 +59,7 @@ function getUserCityChoice(){
     })
     .then(function(result){
         console.log(result);
-
-        const currentTemp = [];
-        result.list.forEach(record => {
-            currentTemp.push(record.main.temp)
-        });        
-        console.log(currentTemp);
-        var currentTempEL = document.createElement('p')
-        currentTempEL.textContent = currentTemp;
-        displayTemp.append(currentTempEL);
-
-        const currentHum = [];
-        result.list.forEach(day => {
-            currentHum.push(day.main.humidity)
-        });        
-        console.log(currentHum);
-        var currentHumEL = document.createElement('p')
-        currentHumEL.textContent = currentHum;
-        displayHum.append(currentHumEL);
-
-        const currentWind = [];
-        result.list.forEach(day => {
-            currentWind.push(day.wind.speed)
-        });        
-        console.log(currentWind);
-        var currentWindEL = document.createElement('p')
-        currentWindEL.textContent = currentWind;
-        displayWind.append(currentWindEL);
-
-        const currentWindD = [];
-        result.list.forEach(day => {
-            currentWindD.push(day.wind.deg)
-        });        
-        console.log(currentWindD);
-        var currentWindDEL = document.createElement('p')
-        currentWindDEL.textContent = currentWindD;
-        displayWindD.append(currentWindDEL);
+        
     })
     }) 
 }
@@ -108,7 +73,6 @@ var storeCityList = function(event){
         storedCities.push({name: cityInput.value});
         //saving amended array to local storage
         localStorage.setItem('cityList',JSON.stringify(storedCities));
-
         //loop over the values in the stored list
         for (let i = cityList.length -1; i >=0; i++){
             const element = storedCities[i];
