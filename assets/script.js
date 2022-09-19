@@ -96,14 +96,14 @@ function getUserCityChoice(){
 
 getUserCityChoice();
 
-// function addData (event){
-//     cityList.push({
-//         name: cityInput.value
-//     });
-//     localStorage.setItem("CityName", JSON.stringify(cityList));
-// };
+function addData (event){
+    cityList.push({
+        name: cityInput.value
+    });
+    localStorage.setItem("CityName", JSON.stringify(cityList));
+};
 
-// submitCity.addEventListener('submit', addData);
+submitCity.addEventListener('submit', addData);
 
 
 
