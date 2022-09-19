@@ -117,13 +117,15 @@ var storeCityList = function(event){
 
             cityNameElement.innerHTML = element.name;
 
-            document.getElementById('previous-list').appendChild(cityNameElement)     
+            document.getElementById('previous-list').appendChild(cityNameElement);    
         }
     } else {
         var storedCities = [{name: cityInput.value}]
         localStorage.setItem('cityList', JSON.stringify(storedCities));
     }
 }
+
+addTime(); // add time to page so the user can determine the request time
 
 
 //upon clicking search in the city button the following should happen:
@@ -137,8 +139,6 @@ var storeCityList = function(event){
 //      store city name so that the search can be redone without typing in again
 //      present the historical search on side bar so that it can be selected
 //      present this in reverse order
-
-addTime(); // add time to page so the user can determine the request time
 
 submitCity.addEventListener('click', storeCityList);
 CityName();
