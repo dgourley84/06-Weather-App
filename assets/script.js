@@ -6,8 +6,8 @@ const displayDate   = document.getElementById('display-date');  //element for th
 const displayTemp   = document.getElementById('display-temp');  //element for the display of the temp
 const displayHum    = document.getElementById('display-hum');   //element for the display of the humidity
 const displayWind   = document.getElementById('display-wind');  //element for the display of wind
-const displayWindD    = document.getElementById('display-windD');    //element for the display of the UV
-const submitCity    = document.querySelector('#search-submit'); //button for search submission
+const displayWindD  = document.getElementById('display-windD'); //element for the display of the UV
+const submitCity    = document.getElementById('search-submit'); //button for search submission
 
 
 const APIKey        = 'aef8ff579a371781a816a273903f8295';
@@ -93,40 +93,21 @@ function getUserCityChoice(){
 
     
 }
+
 getUserCityChoice();
+
+function addData (event){
+    cityList.push({
+        name: cityInput.value
+    });
+    localStorage.setItem("CityName", JSON.stringify(cityList));
+};
+
+submitCity.addEventListener('submit', addData);
+
 
 
 // store city name so that the search can be redone without typing in again
-
-// var storeCityList = function(event){
-//     event.preventDefault();
-//     if(localStorage.getItem('cityList')){
-//         //get current local storage values
-//         var storedCities = JSON.parse(localStorage.getItem('cityList'));
-//         //add new city to city list
-//         storedCities.push({name: cityInput.value});
-//         //saving amended array to local storage
-//         localStorage.setItem('cityList',JSON.stringify(storedCities));
-
-//         //loop over the values in the stored list
-//         for (let i = cityList.length -1; i >=0; i++){
-            
-//             const element = storedCities[i];
-
-//             const cityNameElement = document.createElement('<li>');
-//             cityNameElement.innerHTML = element.name;
-
-//             document.getElementById('previous-list').appendChild(cityNameElement)     
-//         }
-//     } else {
-//         var storedCities = [{name: cityInput.value}]
-//         localStorage.setItem('cityList', JSON.stringify(storedCities));
-//     }
-// }
-
-// submitCity.addEventListener('click',storeCityList);
-
-
 
 // present the historical search on side bar so that it can be selected
 
