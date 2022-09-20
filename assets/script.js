@@ -12,7 +12,7 @@ const currentDate   = moment().format("dddd, MMMM Do YYYY, h:mm a"); // current 
 
 const APIKey        = 'aef8ff579a371781a816a273903f8295'; //api key for the first call to get lat long
 const APIKySecond   = '3e577ad9e250c4dd28d83578156049cc'; //api key for the second call to get weather
-const dayCount = 6; // input number of days to present, current plus future day count 1 + 5 = 6 
+// const dayCount = 6; // input number of days to present, current plus future day count 1 + 5 = 6 
 
 let cityList = []; // list of cities previously searched
 
@@ -28,14 +28,15 @@ function addTime(){
 function CityName (){
     var storedCitiesEL = document.createElement('p')
     storedCitiesEL.textContent = cityInput.value;
-    displayCity.append(storedCitiesEL);
+    displayCity.innerHTML = storedCitiesEL.textContent;
 }
+
 
 //Search function
 // Attempt to get the user's search of city data if it exists
 function getUserCityChoice(){
 
-    var CityQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=brisbane&limit=1&appid=" + APIKey;
+    var CityQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" +cityInput.value+ "&limit=1&appid=" + APIKey;
 
     console.log(CityQueryURL);
 
@@ -59,7 +60,25 @@ function getUserCityChoice(){
     })
     .then(function(result){
         console.log(result);
+
+        let date = []; // date - dt field
+
+        let temp = []; // temp - temp
         
+        let humidity = []; // humidity - humidity field
+
+        let windSpeed = []; // wind speed - wind_speed
+
+        let icon = []; // icon - weather.0.icon
+
+        $card = $(); // create card with the above attributes and city name
+
+        //push into current weather card
+        //  present in header box on top of page
+        
+        //create 5 days forecast in mini boxes
+        //  iterate over the 5 records to present the forecast weather.
+
     })
     }) 
 }
@@ -67,27 +86,55 @@ function getUserCityChoice(){
 var storeCityList = function(event){
     event.preventDefault();
     if(localStorage.getItem('cityList')){
-        //get current local storage values
+        // //get current local storage values
         var storedCities = JSON.parse(localStorage.getItem('cityList'));
         //add new city to city list
         storedCities.push({name: cityInput.value});
         //saving amended array to local storage
         localStorage.setItem('cityList',JSON.stringify(storedCities));
-        //loop over the values in the stored list
-        for (let i = cityList.length -1; i >=0; i++){
-            const element = storedCities[i];
-
-            const cityNameElement = document.createElement('<li>');
-
-            cityNameElement.innerHTML = element.name;
-
-            document.getElementById('previous-list').appendChild(cityNameElement);    
-        }
-    } else {
+    }
+    else {
         var storedCities = [{name: cityInput.value}]
         localStorage.setItem('cityList', JSON.stringify(storedCities));
     }
 }
+
+function displayCityList(){
+    previousInput.innerHTML = "";
+
+    // Start at end of history array and count down to show the most recent at the top.
+    for (var i = cityList.length - 1; i >= 0; i--) {
+        var btn = document.createElement("button");
+        btn.setAttribute("type", "button");
+        btn.setAttribute("aria-controls", "today forecast");
+        btn.classList.add("history-btn", "btn-history");
+  
+        // `data-search` allows access to city name when click handler is invoked
+        btn.setAttribute("data-search", cityList[i]);
+        btn.textContent = cityList[i];
+        previousInput.append(btn);
+    }
+}
+
+function appendToHistory(search) {
+    // If there is no search term return the function
+    if (cityList.indexOf(search) !== -1) {
+      return;
+    }
+    cityList.push(search);
+  
+    localStorage.setItem('search-history', JSON.stringify(cityList));
+    storeCityList();
+}
+
+function initSearchHistory() {
+    var storedCityList = localStorage.getItem('search-history');
+    if (storedCityList) {
+        cityList = JSON.parse(storedCityList);
+    }
+    displayCityList();
+}
+
 
 addTime(); // add time to page so the user can determine the request time
 
@@ -95,18 +142,21 @@ addTime(); // add time to page so the user can determine the request time
 //upon clicking search in the city button the following should happen:
 //1. Take the City name value and push to the display city span
 //      this is done as a header for the current weather box
+submitCity.addEventListener('click', CityName);
 //2. Take the City name value and push into the api call in getUserChoice
 //      this is done to obtain the lat and long so the call can get the info
+submitCity.addEventListener('click', getUserCityChoice);
 //3. Save the value to localStorage
 //      this is done so item 4 has values to present
+submitCity.addEventListener('click', storeCityList);
 //4. Present the value as a button in the previous-list table
 //      store city name so that the search can be redone without typing in again
 //      present the historical search on side bar so that it can be selected
 //      present this in reverse order
+submitCity.addEventListener('click', displayCityList);
 
-submitCity.addEventListener('click', storeCityList);
-CityName();
-getUserCityChoice();
+
+
 
 
 //in the list of previous searches when user clicks on item the following happens:
@@ -120,14 +170,10 @@ getUserCityChoice();
 //      present this in reverse order
 
 //The results for both of the above obtain:
-// temp
-// humidity
-// wind speed
-// date
-// icon
+// temp - temp
+// humidity - humidity field
+// wind speed - wind_speed
+// date - dt field
+// icon - weather.0.icon
 
-//present header box for current weather
-//  present in header box on top of page
-//create 5 days forecast in mini boxes
-//  iterate over the 5 records to present the forecast weather.
 
