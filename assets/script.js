@@ -29,6 +29,7 @@ function CityName (){
     var storedCitiesEL = document.createElement('p')
     storedCitiesEL.textContent = cityInput.value;
     displayCity.innerHTML = storedCitiesEL.textContent;
+
 }
 
 
@@ -61,16 +62,16 @@ function getUserCityChoice(){
     .then(function(result){
         console.log(result);
 
-        let date = []; // date - dt field
-
-        let temp = []; // temp - temp
-        
-        let humidity = []; // humidity - humidity field
-
+        let date = result.daily[0].dt; // date - dt field
+        console.log('date[0] = ', date );
+        let temp = result.daily[0].temp.day; // temp - temp
+        console.log('temp[0] = ', temp );
+        let humidity = result.daily[0].humidity; // humidity - humidity field
+        console.log('humidity[0] = ', humidity );
         let windSpeed = []; // wind speed - wind_speed
 
-        let icon = []; // icon - weather.0.icon
-
+        let icon = result.daily[0].weather[0].icon; // icon - weather.0.icon
+        console.log('icon[0] = ', icon );
         $card = $(); // create card with the above attributes and city name
 
         //push into current weather card
@@ -84,12 +85,14 @@ function getUserCityChoice(){
 }
 
 var storeCityList = function(event){
-    event.preventDefault();
+    // event.preventDefault();
+
     if(localStorage.getItem('cityList')){
         // //get current local storage values
         var storedCities = JSON.parse(localStorage.getItem('cityList'));
         //add new city to city list
         storedCities.push({name: cityInput.value});
+        cityList = storedCities;
         //saving amended array to local storage
         localStorage.setItem('cityList',JSON.stringify(storedCities));
     }
@@ -97,21 +100,22 @@ var storeCityList = function(event){
         var storedCities = [{name: cityInput.value}]
         localStorage.setItem('cityList', JSON.stringify(storedCities));
     }
+    console.log('StoreCityLength', cityList.length)
 }
 
-function displayCityList(){
+function displayCityList(event){
     previousInput.innerHTML = "";
-
+console.log('cityLengthinDisplayCities', cityList.length)
     // Start at end of history array and count down to show the most recent at the top.
-    for (var i = cityList.length - 1; i >= 0; i--) {
+    for (var i = cityList.length -1 ; i >= 0; i--) {
         var btn = document.createElement("button");
         btn.setAttribute("type", "button");
-        btn.setAttribute("aria-controls", "today forecast");
+        // btn.setAttribute("aria-controls", "today forecast");
         btn.classList.add("history-btn", "btn-history");
   
         // `data-search` allows access to city name when click handler is invoked
         btn.setAttribute("data-search", cityList[i]);
-        btn.textContent = cityList[i];
+        btn.textContent = cityList[i].name;
         previousInput.append(btn);
     }
 }
@@ -124,15 +128,17 @@ function appendToHistory(search) {
     cityList.push(search);
   
     localStorage.setItem('search-history', JSON.stringify(cityList));
-    storeCityList();
+    storeCityList(search);
 }
 
 function initSearchHistory() {
-    var storedCityList = localStorage.getItem('search-history');
+    var storedCityList = localStorage.getItem('cityList');
     if (storedCityList) {
         cityList = JSON.parse(storedCityList);
+        console.log(cityList);
     }
-    displayCityList();
+    let event;
+    displayCityList(event);
 }
 
 
@@ -142,21 +148,29 @@ addTime(); // add time to page so the user can determine the request time
 //upon clicking search in the city button the following should happen:
 //1. Take the City name value and push to the display city span
 //      this is done as a header for the current weather box
-submitCity.addEventListener('click', CityName);
+submitCity.addEventListener('click', function(event) {
+    CityName();
+    storeCityList(event);
+    displayCityList(event);
+    getUserCityChoice();
+});
+
 //2. Take the City name value and push into the api call in getUserChoice
 //      this is done to obtain the lat and long so the call can get the info
-submitCity.addEventListener('click', getUserCityChoice);
+// submitCity.addEventListener('click', getUserCityChoice);
 //3. Save the value to localStorage
 //      this is done so item 4 has values to present
-submitCity.addEventListener('click', storeCityList);
+// submitCity.addEventListener('click', storeCityList);
 //4. Present the value as a button in the previous-list table
 //      store city name so that the search can be redone without typing in again
 //      present the historical search on side bar so that it can be selected
 //      present this in reverse order
-submitCity.addEventListener('click', displayCityList);
+// submitCity.addEventListener('click', displayCityList);
 
 
 
+
+initSearchHistory();
 
 
 //in the list of previous searches when user clicks on item the following happens:
