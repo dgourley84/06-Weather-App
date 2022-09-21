@@ -24,8 +24,7 @@ let cityList = []; // list of cities previously searched
 function CityName (){
     var storedCitiesEL = document.createElement('p')
     storedCitiesEL.textContent = cityInput.value;
-    
-}
+    }
 
 
 //Search function
@@ -103,6 +102,8 @@ function getUserCityChoice(){
             let iconF = result.daily[i].weather[0].icon; // icon - weather.0.icon
             console.log('icon[0] = ', iconF );
             
+            var forcastCard = document.createElement("h2");
+
             forcastCard.innerHTML = `
             <div class="other">
                 <h4 class="col-12">${moment.unix(dateF).format("ll")}
@@ -111,7 +112,9 @@ function getUserCityChoice(){
                 <h4 class="col-12">Wind speed: ${windSpeedF}
                 <h4 class="col-12"><img src="http://openweathermap.org/img/wn//${iconF}@4x.png">
             </div>
-            `
+            `;
+
+            forecastDiv.appendChild(forcastCard);
         };
     })
     }) 
@@ -184,7 +187,6 @@ submitCity.addEventListener('click', function(event) {
     displayCityList(event);
     getUserCityChoice();
 });
-
 //2. Take the City name value and push into the api call in getUserChoice
 //      this is done to obtain the lat and long so the call can get the info
 // submitCity.addEventListener('click', getUserCityChoice);
