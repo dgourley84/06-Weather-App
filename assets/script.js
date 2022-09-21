@@ -37,7 +37,7 @@ function CityName (){
 // Attempt to get the user's search of city data if it exists
 function getUserCityChoice(){
 
-    var CityQueryURL = "http://api.openweathermap.org/geo/1.0/direct?q=" +cityInput.value+ "&limit=1&appid=" + APIKey;
+    var CityQueryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" +cityInput.value+ "&limit=1&appid=" + APIKey;
 
     console.log(CityQueryURL);
 
@@ -68,8 +68,8 @@ function getUserCityChoice(){
         console.log('temp[0] = ', temp );
         let humidity = result.daily[0].humidity; // humidity - humidity field
         console.log('humidity[0] = ', humidity );
-        let windSpeed = []; // wind speed - wind_speed
-
+        let windSpeed = result.daily[0].wind_speed; // wind speed - wind_speed
+        console.log('windspeed', windSpeed);
         let icon = result.daily[0].weather[0].icon; // icon - weather.0.icon
         console.log('icon[0] = ', icon );
         $card = $(); // create card with the above attributes and city name
