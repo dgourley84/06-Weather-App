@@ -8,6 +8,9 @@ const displayHum    = document.getElementById('display-hum');   //element for th
 const displayWind   = document.getElementById('display-wind');  //element for the display of wind
 const displayWindD  = document.getElementById('display-windD'); //element for the display of the UV
 const submitCity    = document.getElementById('search-submit'); //button for search submission
+const currentDiv    = document.getElementById('current-div');   //div for the current weather card
+const forecastDiv   = document.getElementById('forecast-div');  //div for the forecast weather cards
+const forcastCard   = document.getElementById('forecast-head'); //forecast div area  
 const currentDate   = moment().format("dddd, MMMM Do YYYY, h:mm a"); // current time and date
 
 const APIKey        = 'aef8ff579a371781a816a273903f8295'; //api key for the first call to get lat long
@@ -16,20 +19,12 @@ const APIKySecond   = '3e577ad9e250c4dd28d83578156049cc'; //api key for the seco
 
 let cityList = []; // list of cities previously searched
 
-//create time and date function and present as part of city selected header
-function addTime(){
-    console.log(currentDate);    
-    var currentDateEL = document.createElement('p')
-    currentDateEL.textContent = currentDate;
-    displayDate.append(currentDateEL);
-};
 
 //create name of city in weather box for inputted city
 function CityName (){
     var storedCitiesEL = document.createElement('p')
     storedCitiesEL.textContent = cityInput.value;
-    displayCity.innerHTML = storedCitiesEL.textContent;
-
+    
 }
 
 
@@ -72,14 +67,52 @@ function getUserCityChoice(){
         console.log('windspeed', windSpeed);
         let icon = result.daily[0].weather[0].icon; // icon - weather.0.icon
         console.log('icon[0] = ', icon );
-        $card = $(); // create card with the above attributes and city name
+        
 
         //push into current weather card
         //  present in header box on top of page
+        currentDiv.innerHTML = `
+            <h1 class="py-2 px-4 col-12">
+                <span id="display-city">${cityInput.value}</span>
+                <span id="display-date">${moment.unix(date).format("dddd, MMMM Do YYYY")}</span>
+            </h1>
+            <h4 class="col-12">Temp:
+                <span id="display-temp">${temp}&#176;C</span>
+            </h4>
+            <h4 class="col-12">Humidity:
+                <span id="display-hum">${humidity}%</span>
+            </h4>
+            <h4 class="col-12">Wind speed:
+                <span id="display-wind">${windSpeed}</span>
+            </h4>
+            <h4 class="col-12">
+                <span id="display-windD"><img src="http://openweathermap.org/img/wn//${icon}@4x.png"></span>
+            </h4>`;
         
         //create 5 days forecast in mini boxes
         //  iterate over the 5 records to present the forecast weather.
-
+        for (let i=1; i <=5; i++){
+            let dateF = result.daily[i].dt; // date - dt field
+            console.log('date[0] = ', dateF );
+            let tempF = result.daily[i].temp.day; // temp - temp
+            console.log('temp[0] = ', tempF );
+            let humidityF = result.daily[i].humidity; // humidity - humidity field
+            console.log('humidity[0] = ', humidityF );
+            let windSpeedF = result.daily[i].wind_speed; // wind speed - wind_speed
+            console.log('windspeed', windSpeedF);
+            let iconF = result.daily[i].weather[0].icon; // icon - weather.0.icon
+            console.log('icon[0] = ', iconF );
+            
+            forcastCard.innerHTML = `
+            <div class="other">
+                <h4 class="col-12">${moment.unix(dateF).format("ll")}
+                <h4 class="col-12">Temp: ${tempF}&#176;C
+                <h4 class="col-12">Humidity: ${humidityF}%
+                <h4 class="col-12">Wind speed: ${windSpeedF}
+                <h4 class="col-12"><img src="http://openweathermap.org/img/wn//${iconF}@4x.png">
+            </div>
+            `
+        };
     })
     }) 
 }
@@ -140,9 +173,6 @@ function initSearchHistory() {
     let event;
     displayCityList(event);
 }
-
-
-addTime(); // add time to page so the user can determine the request time
 
 
 //upon clicking search in the city button the following should happen:
