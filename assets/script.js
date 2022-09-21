@@ -88,6 +88,7 @@ function getUserCityChoice(){
             <h4 class="col-12">
                 <span id="display-windD"><img src="http://openweathermap.org/img/wn//${icon}@4x.png"></span>
             </h4>`;
+        
         //create 5 days forecast in mini boxes
         //  iterate over the 5 records to present the forecast weather.
         for (let i=1; i <=5; i++){
