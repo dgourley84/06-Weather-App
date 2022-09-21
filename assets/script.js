@@ -75,18 +75,13 @@ function getUserCityChoice(){
                 <span id="display-city">${cityInput.value}</span>
                 <span id="display-date">${moment.unix(date).format("dddd, MMMM Do YYYY")}</span>
             </h1>
-            <h4 class="col-12 text-light">Temp:
-                <span id="display-temp">${temp}&#176;C</span>
-            </h4>
-            <h4 class="col-12 text-light">Humidity:
-                <span id="display-hum">${humidity}%</span>
-            </h4>
-            <h4 class="col-12 text-light">Wind speed:
-                <span id="display-wind">${windSpeed}</span>
-            </h4>
-            <h4 class="col-12 text-light">
-                <span id="display-windD"><img src="http://openweathermap.org/img/wn//${icon}@4x.png"></span>
-            </h4>`;
+            <div class="card-body d-flex flex-wrap border-light mb-3 bg-success p-2 text-dark bg-opacity-25 rounded">
+                <h4 class="col-sm">Temp: ${temp}&#176;C
+                <h4 class="col-sm">Humidity: ${humidity}%
+                <h4 class="col-sm">Wind speed: ${windSpeed}
+                <h4 class="col-sm"><img src="http://openweathermap.org/img/wn//${icon}@4x.png">
+            </div>
+            </div>`;
         
         //create 5 days forecast in mini boxes
         //  iterate over the 5 records to present the forecast weather.
@@ -148,10 +143,12 @@ console.log('cityLengthinDisplayCities', cityList.length)
         btn.setAttribute("type", "button");
         // btn.setAttribute("aria-controls", "today forecast");
         btn.classList.add("history-btn", "btn-history");
+        btn.setAttribute("id", "previousCityBtn");
   
         // `data-search` allows access to city name when click handler is invoked
         btn.setAttribute("data-search", cityList[i]);
         btn.textContent = cityList[i].name;
+        
         previousInput.append(btn);
     }
 }
@@ -176,6 +173,13 @@ function initSearchHistory() {
     let event;
     displayCityList(event);
 }
+
+$(function(){
+    $("button").click(function() {
+        var fired_button = $(this).val();
+        alert(fired_button);
+    });
+});
 
 
 //upon clicking search in the city button the following should happen:

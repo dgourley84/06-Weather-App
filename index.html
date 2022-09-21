@@ -18,7 +18,7 @@
     <!-- Create header with "weather dashboard" -->
     <header class="m-auto my-2 text-light fs-1" id="header-div">Weather Dashboard</header>
     <!-- Create search function -->
-    <div class="col-3 px-2 d-flex align-content-start flex-wrap" id="search-div">
+    <div class="col-8 px-2 d-flex align-content-start flex-wrap" id="search-div">
         <!-- Search header -->
         <h3 class="mt-2 mb-4 col-12 fs-3 text-light">Search for a city:</h3>
         <!-- search input box -->
@@ -28,11 +28,13 @@
         </div>
 
         <!-- table of previously searched locations -->
-        <ul id="previous-list" class="list-group col-11 mx-auto p-0 mt-4 container-lg overflow-scroll">
+        <div id = "previous-list-items" class = "col-8">
+            <ul id="previous-list" class="list-group mx-auto p-0 mt-4 container-lg overflow-auto">
 
             <!-- insert previous city list here -->
 
-        </ul>
+            </ul>
+        </div>
     </div>
 
     <div>
