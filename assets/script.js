@@ -71,20 +71,20 @@ function getUserCityChoice(){
         //push into current weather card
         //  present in header box on top of page
         currentDiv.innerHTML = `
-            <h1 class="py-2 px-4 col-12">
+            <h1 class="py-2 px-4 col-12 text-light">
                 <span id="display-city">${cityInput.value}</span>
                 <span id="display-date">${moment.unix(date).format("dddd, MMMM Do YYYY")}</span>
             </h1>
-            <h4 class="col-12">Temp:
+            <h4 class="col-12 text-light">Temp:
                 <span id="display-temp">${temp}&#176;C</span>
             </h4>
-            <h4 class="col-12">Humidity:
+            <h4 class="col-12 text-light">Humidity:
                 <span id="display-hum">${humidity}%</span>
             </h4>
-            <h4 class="col-12">Wind speed:
+            <h4 class="col-12 text-light">Wind speed:
                 <span id="display-wind">${windSpeed}</span>
             </h4>
-            <h4 class="col-12">
+            <h4 class="col-12 text-light">
                 <span id="display-windD"><img src="http://openweathermap.org/img/wn//${icon}@4x.png"></span>
             </h4>`;
         
@@ -105,12 +105,12 @@ function getUserCityChoice(){
             var forcastCard = document.createElement("h2");
 
             forcastCard.innerHTML = `
-            <div class="other">
-                <h4 class="col-12">${moment.unix(dateF).format("ll")}
-                <h4 class="col-12">Temp: ${tempF}&#176;C
-                <h4 class="col-12">Humidity: ${humidityF}%
-                <h4 class="col-12">Wind speed: ${windSpeedF}
-                <h4 class="col-12"><img src="http://openweathermap.org/img/wn//${iconF}@4x.png">
+            <div class="card-body d-flex flex-wrap border-light mb-3 bg-success p-2 text-dark bg-opacity-25 rounded">
+                <h4 class="col-sm">${moment.unix(dateF).format("ll")}
+                <h4 class="col-sm">Temp: ${tempF}&#176;C
+                <h4 class="col-sm">Humidity: ${humidityF}%
+                <h4 class="col-sm">Wind speed: ${windSpeedF}
+                <h4 class="col-sm"><img src="http://openweathermap.org/img/wn//${iconF}@4x.png">
             </div>
             `;
 

@@ -6,27 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="./assets/style.css" type="stylesheet">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+    <link href="./assets/style.css" rel="stylesheet">
+    
 
 </head>
 <body>
     <!-- Create header with "weather dashboard" -->
-    <header class="m-auto my-2 text-light" id="header-div">Weather Dashboard</header>
+    <header class="m-auto my-2 text-light fs-1" id="header-div">Weather Dashboard</header>
     <!-- Create search function -->
-    <div class="bg-secondary col-3 px-2" id="search-div">
+    <div class="col-3 px-2 d-flex align-content-start flex-wrap" id="search-div">
         <!-- Search header -->
-        <h3 class="mt-2 mb-4 col-12">Search for a city:</h3>
+        <h3 class="mt-2 mb-4 col-12 fs-3 text-light">Search for a city:</h3>
         <!-- search input box -->
-        <div id="search-input-div" class="form-control">
-            <input id="search-input" placeholder="City Name">
-            <button type="submit" id="search-submit">search</button>
+        <div id="search-input-div" class="bg-transparent">
+            <input id="search-input" placeholder="City Name" class="rounded">
+            <button type="submit" id="search-submit" class="rounded">search</button>
         </div>
 
         <!-- table of previously searched locations -->
-        <ul id="previous-list" class="list-group col-11 mx-auto p-0 mt-4">
+        <ul id="previous-list" class="list-group col-11 mx-auto p-0 mt-4 container-lg overflow-scroll">
 
             <!-- insert previous city list here -->
 
@@ -35,15 +37,15 @@
 
     <div>
     <!-- create current weather conditions -->
-        <div id="current-div" class="row bg-secondary my-3 mx-2">
+        <div id="current-div" class="row my-3 mx-2 card-body d-flex flex-wrap">
             
             <!-- insert current weather card -->
 
         </div>
 
-        <div id="forecast-div" class="row m-2">
+        <div id="forecast-div" class="row m-2 container">
     <!-- create forecast section with the 5 days section -->
-            <h2 id="forecast-head" class="col-12">current and 5-day forecast:</h2>
+            <h2 id="forecast-head row" class="col-12 text-light">Current and 5-day forecast:</h2>
 
             <!-- insert weather forecast cards -->
 
