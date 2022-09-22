@@ -176,17 +176,18 @@ function initSearchHistory() {
 //upon clicking search in the city button the following should happen:
 //1. Take the City name value and push to the display city span
 //      this is done as a header for the current weather box
+
 //2. Take the City name value and push into the api call in getUserChoice
 //      this is done to obtain the lat and long so the call can get the info
-// submitCity.addEventListener('click', getUserCityChoice);
+
 //3. Save the value to localStorage
 //      this is done so item 4 has values to present
-// submitCity.addEventListener('click', storeCityList);
+
 //4. Present the value as a button in the previous-list table
 //      store city name so that the search can be redone without typing in again
 //      present the historical search on side bar so that it can be selected
 //      present this in reverse order
-// submitCity.addEventListener('click', displayCityList);
+
 submitCity.addEventListener('click', function(event) {
     CityName();
     storeCityList(event);
