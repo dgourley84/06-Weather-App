@@ -117,7 +117,6 @@ function getUserCityChoice(){
 
 var storeCityList = function(event){
     // event.preventDefault();
-
     if(localStorage.getItem('cityList')){
         // //get current local storage values
         var storedCities = JSON.parse(localStorage.getItem('cityList'));
@@ -174,23 +173,9 @@ function initSearchHistory() {
     displayCityList(event);
 }
 
-$(function(){
-    $("button").click(function() {
-        var fired_button = $(this).val();
-        alert(fired_button);
-    });
-});
-
-
 //upon clicking search in the city button the following should happen:
 //1. Take the City name value and push to the display city span
 //      this is done as a header for the current weather box
-submitCity.addEventListener('click', function(event) {
-    CityName();
-    storeCityList(event);
-    displayCityList(event);
-    getUserCityChoice();
-});
 //2. Take the City name value and push into the api call in getUserChoice
 //      this is done to obtain the lat and long so the call can get the info
 // submitCity.addEventListener('click', getUserCityChoice);
@@ -202,12 +187,12 @@ submitCity.addEventListener('click', function(event) {
 //      present the historical search on side bar so that it can be selected
 //      present this in reverse order
 // submitCity.addEventListener('click', displayCityList);
-
-
-
-
-initSearchHistory();
-
+submitCity.addEventListener('click', function(event) {
+    CityName();
+    storeCityList(event);
+    displayCityList(event);
+    getUserCityChoice();
+});
 
 //in the list of previous searches when user clicks on item the following happens:
 //1. take the city name value and push to the display city span
@@ -218,12 +203,97 @@ initSearchHistory();
 //      store city name so that the search can be redone without typing in again
 //      present the historical search on side bar so that it can be selected
 //      present this in reverse order
-
-//The results for both of the above obtain:
-// temp - temp
-// humidity - humidity field
-// wind speed - wind_speed
-// date - dt field
-// icon - weather.0.icon
+$(function(){
+    $(".history-btn").click(function() {
+        var fired_button = $(this).html()
+        console.log('here is city name', fired_button)
 
 
+        var PreviousCityQueryURL = "https://api.openweathermap.org/geo/1.0/direct?q=" +fired_button+ "&limit=1&appid=" + APIKey;
+
+        console.log(PreviousCityQueryURL);
+    
+        return fetch(PreviousCityQueryURL)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(result){
+            console.log(result);
+            const lat = result[0].lat;
+            console.log(lat);
+            const lon = result[0].lon;
+            console.log(lon);
+    
+        var QueryURLLonLat = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=metric&exclude=hourly,minutely&appid=" + APIKySecond;
+        console.log(QueryURLLonLat);
+    
+        return fetch(QueryURLLonLat)
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(result){
+            console.log(result);
+    
+            let date = result.daily[0].dt; // date - dt field
+            console.log('date[0] = ', date );
+            let temp = result.daily[0].temp.day; // temp - temp
+            console.log('temp[0] = ', temp );
+            let humidity = result.daily[0].humidity; // humidity - humidity field
+            console.log('humidity[0] = ', humidity );
+            let windSpeed = result.daily[0].wind_speed; // wind speed - wind_speed
+            console.log('windspeed', windSpeed);
+            let icon = result.daily[0].weather[0].icon; // icon - weather.0.icon
+            console.log('icon[0] = ', icon );
+            
+    
+            //push into current weather card
+            //  present in header box on top of page
+            currentDiv.innerHTML = `
+                <h1 class="py-2 px-4 col-12 text-light">
+                    <span id="display-city">${fired_button}</span>
+                    <span id="display-date">${moment.unix(date).format("dddd, MMMM Do YYYY")}</span>
+                </h1>
+                <div class="card-body d-flex flex-wrap border-light mb-3 bg-success p-2 text-dark bg-opacity-25 rounded">
+                    <h4 class="col-sm">Temp: ${temp}&#176;C
+                    <h4 class="col-sm">Humidity: ${humidity}%
+                    <h4 class="col-sm">Wind speed: ${windSpeed}
+                    <h4 class="col-sm"><img src="http://openweathermap.org/img/wn//${icon}@4x.png">
+                </div>
+                </div>`;
+            
+            //create 5 days forecast in mini boxes
+            //  iterate over the 5 records to present the forecast weather.
+            for (let i=1; i <=5; i++){
+                let dateF = result.daily[i].dt; // date - dt field
+                console.log('date[0] = ', dateF );
+                let tempF = result.daily[i].temp.day; // temp - temp
+                console.log('temp[0] = ', tempF );
+                let humidityF = result.daily[i].humidity; // humidity - humidity field
+                console.log('humidity[0] = ', humidityF );
+                let windSpeedF = result.daily[i].wind_speed; // wind speed - wind_speed
+                console.log('windspeed', windSpeedF);
+                let iconF = result.daily[i].weather[0].icon; // icon - weather.0.icon
+                console.log('icon[0] = ', iconF );
+                
+                var forcastCard = document.createElement("h2");
+    
+                forcastCard.innerHTML = `
+                <div class="card-body d-flex flex-wrap border-light mb-3 bg-success p-2 text-dark bg-opacity-25 rounded">
+                    <h4 class="col-sm">${moment.unix(dateF).format("ll")}
+                    <h4 class="col-sm">Temp: ${tempF}&#176;C
+                    <h4 class="col-sm">Humidity: ${humidityF}%
+                    <h4 class="col-sm">Wind speed: ${windSpeedF}
+                    <h4 class="col-sm"><img src="http://openweathermap.org/img/wn//${iconF}@4x.png">
+                </div>
+                `;
+    
+                forecastDiv.appendChild(forcastCard);
+            };
+        })
+        }) 
+});
+});
+
+
+//upon loading of page publish 
+initSearchHistory();
